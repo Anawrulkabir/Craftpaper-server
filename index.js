@@ -66,6 +66,20 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/items/user/:email', async (req, res) => {
+      const email = req.params.email
+      // console.log(email)
+      const query = { email: email }
+      const result = await all_public_data(query)
+      // const result = await cursor.toArray()
+
+      // const main = res.json(result)
+
+      // res.send(main)
+      // res.send(email)
+      res.send(result)
+    })
+
     //
 
     //
