@@ -42,6 +42,10 @@ async function run() {
       .db('Craft_House')
       .collection('all_public_data')
 
+    const favouriteData = client
+      .db('Craft_House')
+      .collection('favourite_item_data')
+
     // post all_public_data into server
     app.post('/items', async (req, res) => {
       const item = req.body
@@ -74,41 +78,55 @@ async function run() {
       res.send(result)
     })
 
-    // app.put('/update/:id', async (req, res) => {
-    //   const id = req.params.id
-    //   console.log(req.body)
-
-    //   const filter = { _id: new ObjectId(id) }
-    //   const options = { upsert: true }
-
-    //   const newItem = {
-    //     $set: {
-    //       image: req.body.image,
-    //       name: req.body.name,
-    //       category: req.body.category,
-    //       description: req.body.description,
-    //       price: req.body.price,
-    //       rating: req.body.rating,
-    //       time: req.body.time,
-    //       username: req.body.username,
-    //       email: req.body.email,
-    //       customization: req.body.customization,
-    //       status: req.body.status,
-    //     },
-    //   }
-
-    //   const result = await all_public_data.updateOne(filter, newItem, options)
-
-    // })
-
     app.put('/update/:id', async (req, res) => {
-      console.log(req.params.id)
+      const id = req.params.id
+      console.log(req.body)
+
+      const filter = { _id: new ObjectId(id) }
+      const options = { upsert: true }
+
+      const newItem = {
+        $set: {
+          image: req.body.image,
+          name: req.body.name,
+          category: req.body.category,
+          description: req.body.description,
+          price: req.body.price,
+          rating: req.body.rating,
+          time: req.body.time,
+          username: req.body.username,
+          email: req.body.email,
+          customization: req.body.customization,
+          status: req.body.status,
+        },
+      }
+
+      const result = await all_public_data.updateOne(filter, newItem, options)
+
+      res.send(result)
+    })
+    app.get('/update', async (req, res) => {
+      const cursor = favouriteData.find()
+      const result = await cursor.toArray()
+      res.send(result)
     })
 
-    app.delete('/item/:id', async (req, res) => {
+    app.post('/favourite', async (req, res) => {
+      const item = req.body
+      const result = await favouriteData.insertOne(item)
+      res.send(result)
+      console.log(item)
+    })
+
+    // app.put('/update/:id', async (req, res) => {
+    //   console.log(req.params.id)
+    //   res.send(req.params.id)
+    // })
+
+    app.delete('/delete/:id', async (req, res) => {
       const id = req.params.id
       const query = { _id: new ObjectId(id) }
-      const result = await coffeeCollection.deleteOne(query)
+      const result = await all_public_data.deleteOne(query)
       res.send(result)
     })
 
