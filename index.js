@@ -46,6 +46,8 @@ async function run() {
       .db('Craft_House')
       .collection('favourite_item_data')
 
+    const cartItem = client.db('Craft_House').collection('cart_item_data')
+
     // post all_public_data into server
     app.post('/items', async (req, res) => {
       const item = req.body
@@ -105,17 +107,42 @@ async function run() {
 
       res.send(result)
     })
-    app.get('/update', async (req, res) => {
-      const cursor = favouriteData.find()
-      const result = await cursor.toArray()
-      res.send(result)
-    })
 
     app.post('/favourite', async (req, res) => {
       const item = req.body
       const result = await favouriteData.insertOne(item)
       res.send(result)
       console.log(item)
+    })
+
+    app.get('/favourite', async (req, res) => {
+      const cursor = favouriteData.find()
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
+    app.get('/favourite/:email', async (req, res) => {
+      const cursor = favouriteData.find({ email: req.params.email })
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+    app.post('/cart', async (req, res) => {
+      const item = req.body
+      const result = await cartItem.insertOne(item)
+      res.send(result)
+      console.log(item)
+    })
+
+    app.get('/cart', async (req, res) => {
+      const cursor = cartItem.find()
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
+    app.get('/cart/:email', async (req, res) => {
+      const cursor = cartItem.find({ email: req.params.email })
+      const result = await cursor.toArray()
+      res.send(result)
     })
 
     // app.put('/update/:id', async (req, res) => {
