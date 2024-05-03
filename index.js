@@ -74,32 +74,35 @@ async function run() {
       res.send(result)
     })
 
-    app.put('/items/:id', async (req, res) => {
-      const id = req.params.id
-      console.log(id)
+    // app.put('/update/:id', async (req, res) => {
+    //   const id = req.params.id
+    //   console.log(req.body)
 
-      const filter = { _id: new ObjectId(id) }
-      const options = { upsert: true }
+    //   const filter = { _id: new ObjectId(id) }
+    //   const options = { upsert: true }
 
-      const newItem = {
-        $set: {
-          image: req.body.image,
-          name: req.body.name,
-          category: req.body.category,
-          description: req.body.description,
-          price: req.body.price,
-          rating: req.body.rating,
-          time: req.body.time,
-          username: req.body.username,
-          email: req.body.email,
-          customization: req.body.customization,
-          status: req.body.status,
-        },
-      }
+    //   const newItem = {
+    //     $set: {
+    //       image: req.body.image,
+    //       name: req.body.name,
+    //       category: req.body.category,
+    //       description: req.body.description,
+    //       price: req.body.price,
+    //       rating: req.body.rating,
+    //       time: req.body.time,
+    //       username: req.body.username,
+    //       email: req.body.email,
+    //       customization: req.body.customization,
+    //       status: req.body.status,
+    //     },
+    //   }
 
-      const result = await all_public_data.updateOne(filter, newItem, options)
-      // res.send(result)
-      console.log(result)
+    //   const result = await all_public_data.updateOne(filter, newItem, options)
+
+    // })
+
+    app.put('/update/:id', async (req, res) => {
+      console.log(req.params.id)
     })
 
     app.delete('/item/:id', async (req, res) => {
